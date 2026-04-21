@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Axios Fetch Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #eee;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Product List</h2>
+    <button onclick="fetchData()">Load Products</button>
+
+    <ul id="productList"></ul>
+</div>
+
+<script>
+const API = "http://localhost:5000/api/products";
+
+function fetchData() {
+    axios.get(API)
+        .then(response => {
+            const products = response.data;
+            const list = document.getElementById("productList");
+            list.innerHTML = "";
+
+            products.forEach(p => {
+                const li = document.createElement("li");
+                li.textContent = `${p.name} - ₹${p.price}`;
+                list.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            alert("Failed to load data");
+        });
+}
+</script>
+
+</body>
+</html>

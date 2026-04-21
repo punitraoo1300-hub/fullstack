@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+            width: 90%;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #eee;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Employee Management</h2>
+
+    <input type="text" id="empId" placeholder="Employee ID">
+    <input type="text" id="empName" placeholder="Employee Name">
+    <input type="text" id="empRole" placeholder="Employee Role">
+
+    <button onclick="addEmployee()">Add Employee</button>
+    <button onclick="viewEmployees()">View Employees</button>
+
+    <input type="text" id="searchId" placeholder="Search by ID">
+    <button onclick="searchEmployee()">Search</button>
+
+    <input type="text" id="deleteId" placeholder="Delete by ID">
+    <button onclick="deleteEmployee()">Delete</button>
+
+    <h3>Employee List</h3>
+    <ul id="employeeList"></ul>
+</div>
+
+<script>
+    let employees = [];
+
+    function addEmployee() {
+        const id = document.getElementById("empId").value;
+        const name = document.getElementById("empName").value;
+        const role = document.getElementById("empRole").value;
+
+        if (!id || !name || !role) {
+            alert("Please fill all fields!");
+            return;
+        }
+
+        employees.push({ id, name, role });
+        alert("Employee Added!");
+        clearInputs();
+    }
+
+    function viewEmployees() {
+        const list = document.getElementById("employeeList");
+        list.innerHTML = "";
+
+        employees.forEach(emp => {
+            const li = document.createElement("li");
+            li.textContent = `ID: ${emp.id}, Name: ${emp.name}, Role: ${emp.role}`;
+            list.appendChild(li);
+        });
+    }
+
+    function searchEmployee() {
+        const searchId = document.getElementById("searchId").value;
+        const emp = employees.find(e => e.id === searchId);
+
+        if (emp) {
+            alert(`Found: ${emp.name}, ${emp.role}`);
+        } else {
+            alert("Employee not found");
+        }
+    }
+
+    function deleteEmployee() {
+        const deleteId = document.getElementById("deleteId").value;
+        const index = employees.findIndex(e => e.id === deleteId);
+
+        if (index !== -1) {
+            employees.splice(index, 1);
+            alert("Employee Deleted");
+            viewEmployees();
+        } else {
+            alert("Employee not found");
+        }
+    }
+
+    function clearInputs() {
+        document.getElementById("empId").value = "";
+        document.getElementById("empName").value = "";
+        document.getElementById("empRole").value = "";
+    }
+</script>
+
+</body>
+</html>

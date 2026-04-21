@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Middleware Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        input, button {
+            width: 90%;
+            padding: 8px;
+            margin: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Middleware Tester</h2>
+
+    <button onclick="callPublic()">Call Public Route</button>
+
+    <input type="text" id="token" placeholder="Enter Auth Token">
+    <button onclick="callProtected()">Call Protected Route</button>
+
+    <p id="result"></p>
+</div>
+
+<script>
+const BASE_URL = "http://localhost:3000";
+
+// Public route
+async function callPublic() {
+    const res = await fetch(`${BASE_URL}/`);
+    const text = await res.text();
+    document.getElementById("result").innerText = text;
+}
+
+// Protected route
+async function callProtected() {
+    const token = document.getElementById("token").value;
+
+    const res = await fetch(`${BASE_URL}/dashboard`, {
+        method: "GET",
+        headers: {
+            "Authorization": token
+        }
+    });
+
+    const data = await res.text();
+    document.getElementById("result").innerText = data;
+}
+</script>
+
+</body>
+</html>

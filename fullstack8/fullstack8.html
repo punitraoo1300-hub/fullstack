@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker React App</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #282c34;
+            color: white;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        button {
+            padding: 10px;
+            background: #61dafb;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #21a1f1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 React App Running in Docker</h1>
+    <p id="status">Click button to check container</p>
+    <button onclick="checkApp()">Check Status</button>
+</div>
+
+<script>
+function checkApp() {
+    document.getElementById("status").innerText =
+        "✅ App is running successfully inside Docker container!";
+}
+</script>
+
+</body>
+</html>

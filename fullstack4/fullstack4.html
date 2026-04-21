@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product CRUD</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 8px;
+            width: 90%;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #eee;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Product Management</h2>
+
+    <input type="text" id="name" placeholder="Product Name">
+    <input type="number" id="price" placeholder="Price">
+    <input type="text" id="category" placeholder="Category">
+
+    <button onclick="addProduct()">Add Product</button>
+    <button onclick="getProducts()">View Products</button>
+
+    <input type="text" id="updateId" placeholder="Update Product ID">
+    <input type="number" id="updatePrice" placeholder="New Price">
+    <button onclick="updateProduct()">Update Product</button>
+
+    <input type="text" id="deleteId" placeholder="Delete Product ID">
+    <button onclick="deleteProduct()">Delete Product</button>
+
+    <h3>Product List</h3>
+    <ul id="productList"></ul>
+</div>
+
+<script>
+const API = "http://localhost:3000/products";
+
+// CREATE
+async function addProduct() {
+    const name = document.getElementById("name").value;
+    const price = document.getElementById("price").value;
+    const category = document.getElementById("category").value;
+
+    const res = await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, price, category })
+    });
+
+    const data = await res.json();
+    alert("Product Added!");
+    getProducts();
+}
+
+// READ
+async function getProducts() {
+    const res = await fetch(API);
+    const products = await res.json();
+
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+
+    products.forEach(p => {
+        const li = document.createElement("li");
+        li.textContent = `ID: ${p._id} | ${p.name} - ₹${p.price}`;
+        list.appendChild(li);
+    });
+}
+
+// UPDATE
+async function updateProduct() {
+    const id = document.getElementById("updateId").value;
+    const price = document.getElementById("updatePrice").value;
+
+    await fetch(`${API}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ price })
+    });
+
+    alert("Product Updated!");
+    getProducts();
+}
+
+// DELETE
+async function deleteProduct() {
+    const id = document.getElementById("deleteId").value;
+
+    await fetch(`${API}/${id}`, {
+        method: "DELETE"
+    });
+
+    alert("Product Deleted!");
+    getProducts();
+}
+</script>
+
+</body>
+</html>
